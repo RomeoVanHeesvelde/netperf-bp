@@ -59,7 +59,7 @@ spec:
           - /bin/sh
           - -c
           - |
-            until nc -z ping-server-0.ping-server.pingtest.svc.cluster.local 80; do
+            until ping -c 1 ping-server-0.ping-server.pingtest.svc.cluster.local > /dev/null 2>&1; do
               echo "Waiting for ping-server-0..."
               sleep 2
             done
@@ -70,10 +70,11 @@ spec:
           - /bin/sh
           - -c
           - |
-            echo "Pinging ping-server-0.ping-server.pingtest.svc.cluster.local..."
-            ping -c 5 ping-server-0.ping-server.pingtest.svc.cluster.local
+            echo "Pinging ping-server-0..."
+            ping -c 30 ping-server-0.ping-server.pingtest.svc.cluster.local
 
 ---
+
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -90,7 +91,7 @@ spec:
           - /bin/sh
           - -c
           - |
-            until nc -z ping-server-1.ping-server.pingtest.svc.cluster.local 80; do
+            until ping -c 1 ping-server-1.ping-server.pingtest.svc.cluster.local > /dev/null 2>&1; do
               echo "Waiting for ping-server-1..."
               sleep 2
             done
@@ -101,10 +102,11 @@ spec:
           - /bin/sh
           - -c
           - |
-            echo "Pinging ping-server-1.ping-server.pingtest.svc.cluster.local..."
-            ping -c 5 ping-server-1.ping-server.pingtest.svc.cluster.local
+            echo "Pinging ping-server-1..."
+            ping -c 30 ping-server-1.ping-server.pingtest.svc.cluster.local
 
 ---
+
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -121,7 +123,7 @@ spec:
           - /bin/sh
           - -c
           - |
-            until nc -z ping-server-2.ping-server.pingtest.svc.cluster.local 80; do
+            until ping -c 1 ping-server-2.ping-server.pingtest.svc.cluster.local > /dev/null 2>&1; do
               echo "Waiting for ping-server-2..."
               sleep 2
             done
@@ -132,6 +134,6 @@ spec:
           - /bin/sh
           - -c
           - |
-            echo "Pinging ping-server-2.ping-server.pingtest.svc.cluster.local..."
-            ping -c 5 ping-server-2.ping-server.pingtest.svc.cluster.local
+            echo "Pinging ping-server-2..."
+            ping -c 30 ping-server-2.ping-server.pingtest.svc.cluster.local
 
