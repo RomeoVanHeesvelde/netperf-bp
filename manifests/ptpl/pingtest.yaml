@@ -71,7 +71,7 @@ spec:
           - -c
           - |
             echo "Pinging ping-server-0..."
-            ping -c 30 ping-server-0.ping-server.pingtest.svc.cluster.local
+            ping -c 100 ping-server-0.ping-server.pingtest.svc.cluster.local
 
 ---
 
@@ -103,7 +103,7 @@ spec:
           - -c
           - |
             echo "Pinging ping-server-1..."
-            ping -c 30 ping-server-1.ping-server.pingtest.svc.cluster.local
+            ping -c 100 ping-server-1.ping-server.pingtest.svc.cluster.local
 
 ---
 
@@ -135,5 +135,5 @@ spec:
           - -c
           - |
             echo "Pinging ping-server-2..."
-            ping -c 30 ping-server-2.ping-server.pingtest.svc.cluster.local
+            ping -c 100 ping-server-2.ping-server.pingtest.svc.cluster.local
 
