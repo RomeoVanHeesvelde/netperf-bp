@@ -52,6 +52,17 @@ spec:
   template:
     spec:
       restartPolicy: Never
+      initContainers:
+      - name: wait-for-server
+        image: busybox
+        command:
+          - /bin/sh
+          - -c
+          - |
+            until nc -z ping-server-0.ping-server.pingtest.svc.cluster.local 80; do
+              echo "Waiting for ping-server-0..."
+              sleep 2
+            done
       containers:
       - name: ping
         image: busybox
@@ -63,7 +74,6 @@ spec:
             ping -c 5 ping-server-0.ping-server.pingtest.svc.cluster.local
 
 ---
-
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -73,6 +83,17 @@ spec:
   template:
     spec:
       restartPolicy: Never
+      initContainers:
+      - name: wait-for-server
+        image: busybox
+        command:
+          - /bin/sh
+          - -c
+          - |
+            until nc -z ping-server-1.ping-server.pingtest.svc.cluster.local 80; do
+              echo "Waiting for ping-server-1..."
+              sleep 2
+            done
       containers:
       - name: ping
         image: busybox
@@ -84,7 +105,6 @@ spec:
             ping -c 5 ping-server-1.ping-server.pingtest.svc.cluster.local
 
 ---
-
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -94,9 +114,24 @@ spec:
   template:
     spec:
       restartPolicy: Never
+      initContainers:
+      - name: wait-for-server
+        image: busybox
+        command:
+          - /bin/sh
+          - -c
+          - |
+            until nc -z ping-server-2.ping-server.pingtest.svc.cluster.local 80; do
+              echo "Waiting for ping-server-2..."
+              sleep 2
+            done
       containers:
       - name: ping
         image: busybox
         command:
           - /bin/sh
           - -c
+          - |
+            echo "Pinging ping-server-2.ping-server.pingtest.svc.cluster.local..."
+            ping -c 5 ping-server-2.ping-server.pingtest.svc.cluster.local
+
