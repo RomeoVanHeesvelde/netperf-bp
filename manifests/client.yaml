@@ -7,6 +7,17 @@ spec:
   template:
     spec:
       restartPolicy: Never
+      initContainers:
+      - name: wait-for-server
+        image: busybox
+        command:
+          - /bin/sh
+          - -c
+          - |
+            until nc -z iperf3-server-0.iperf3-server.iperf.svc.cluster.local 5201; do
+              echo "Waiting for iperf3-server-0..."
+              sleep 2
+            done
       containers:
       - name: iperf3
         image: networkstatic/iperf3
@@ -23,6 +34,17 @@ spec:
   template:
     spec:
       restartPolicy: Never
+      initContainers:
+      - name: wait-for-server
+        image: busybox
+        command:
+          - /bin/sh
+          - -c
+          - |
+            until nc -z iperf3-server-1.iperf3-server.iperf.svc.cluster.local 5201; do
+              echo "Waiting for iperf3-server-1..."
+              sleep 2
+            done
       containers:
       - name: iperf3
         image: networkstatic/iperf3
@@ -39,6 +61,17 @@ spec:
   template:
     spec:
       restartPolicy: Never
+      initContainers:
+      - name: wait-for-server
+        image: busybox
+        command:
+          - /bin/sh
+          - -c
+          - |
+            until nc -z iperf3-server-2.iperf3-server.iperf.svc.cluster.local 5201; do
+              echo "Waiting for iperf3-server-2..."
+              sleep 2
+            done
       containers:
       - name: iperf3
         image: networkstatic/iperf3
