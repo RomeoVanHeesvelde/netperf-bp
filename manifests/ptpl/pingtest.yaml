@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pingtest
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ping-server
+  namespace: pingtest
+spec:
+  serviceName: ping-server
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ping-server
+  template:
+    metadata:
+      labels:
+        app: ping-server
+    spec:
+      containers:
+      - name: ping-server
+        image: busybox
+        command: ["/bin/sh", "-c", "sleep 3600"]  # just sleep so pod stays running
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ping-server
+  namespace: pingtest
+spec:
+  clusterIP: None  # headless service for stable DNS
+  selector:
+    app: ping-server
+  ports:
+  - port: 80
+    targetPort: 80
+
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ping-client-0
+  namespace: pingtest
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: ping
+        image: busybox
+        command:
+          - /bin/sh
+          - -c
+          - |
+            echo "Pinging ping-server-0.ping-server.pingtest.svc.cluster.local..."
+            ping -c 5 ping-server-0.ping-server.pingtest.svc.cluster.local
+
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ping-client-1
+  namespace: pingtest
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: ping
+        image: busybox
+        command:
+          - /bin/sh
+          - -c
+          - |
+            echo "Pinging ping-server-1.ping-server.pingtest.svc.cluster.local..."
+            ping -c 5 ping-server-1.ping-server.pingtest.svc.cluster.local
+
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ping-client-2
+  namespace: pingtest
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: ping
+        image: busybox
+        command:
+          - /bin/sh
+          - -c
