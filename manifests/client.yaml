@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: iperf3-client
+  namespace: iperf
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: iperf3
+        image: networkstatic/iperf3
+        command: ["iperf3"]
+        args: ["-c", "iperf3.iperf.svc.cluster.local", "-t", "10"]
