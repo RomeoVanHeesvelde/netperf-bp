@@ -17,7 +17,7 @@ spec:
         command: [ "sh", "-c" ]
         args:
           - >
-            ffmpeg -i https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4
+            ffmpeg -i https://archive.org/download/BigBuckBunny_328/BigBuckBunny_512kb.mp4
             -filter:v scale=1280:720
             -c:v libx264
             -preset slow
