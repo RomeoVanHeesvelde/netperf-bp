@@ -1,3 +1,4 @@
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -13,18 +14,14 @@ spec:
       containers:
       - name: ffmpeg
         image: jrottenberg/ffmpeg:4.1-alpine
-        command:
-          - ffmpeg
+        command: [ "sh", "-c" ]
         args:
-          - "-i"
-          - "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
-          - "-filter:v"
-          - "scale=1280:720"
-          - "-c:v"
-          - "libx264"
-          - "-preset"
-          - "slow"
-          - "/tmp/output.mp4"
+          - >
+            ffmpeg -i https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4
+            -filter:v scale=1280:720
+            -c:v libx264
+            -preset slow
+            /tmp/output.mp4
         volumeMounts:
           - name: tmp-storage
             mountPath: /tmp
