@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ffmpeg-transcode
+  labels:
+    app: ffmpeg-benchmark
+spec:
+  template:
+    metadata:
+      labels:
+        app: ffmpeg-benchmark
+    spec:
+      containers:
+      - name: ffmpeg
+        image: jrottenberg/ffmpeg:4.1-alpine
+        command:
+          - ffmpeg
+        args:
+          - "-i"
+          - "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+          - "-filter:v"
+          - "scale=1280:720"
+          - "-c:v"
+          - "libx264"
+          - "-preset"
+          - "slow"
+          - "/tmp/output.mp4"
+        volumeMounts:
+          - name: tmp-storage
+            mountPath: /tmp
+        resources:
+          limits:
+            cpu: "2"
+            memory: "3Gi"
+          requests:
+            cpu: "1"
+            memory: "2Gi"
+      restartPolicy: Never
+      volumes:
+        - name: tmp-storage
+          emptyDir: {}
+  backoffLimit: 0
